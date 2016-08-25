@@ -61,6 +61,13 @@ RUN mkdir /var/www && mkdir /etc/caddy
 RUN curl https://getcaddy.com | bash
 COPY caddyfile /etc/caddy
 
+#########################
+# enode.sh to get enode #
+#########################
+
+COPY enode.sh /usr/local/bin/enode.sh
+RUN chmod +x /usr/local/bin/enode.sh
+
 ################
 # install etcd #
 ################

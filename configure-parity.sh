@@ -79,7 +79,7 @@ EOL
 # for reference
 #command="parity --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
 DAPP_PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
-command="parity --dapps-port 8002 --dapps-interface 0.0.0.0 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all"
+command="parity --dapps-port 8002 --dapps-interface 0.0.0.0 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
 printf "%s\n%s" "#!/bin/sh" "$command" | tee /etc/init.d/parity
 chmod +x /etc/init.d/parity
 echo parity:$command >> /etc/goreman/Procfile 
