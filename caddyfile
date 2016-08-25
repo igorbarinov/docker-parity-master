@@ -1,0 +1,4 @@
+:8001
+gzip
+log /var/access.log
+root /var/www

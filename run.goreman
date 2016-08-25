@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /etc/goreman 
+echo "starting foreman in bg.."
+goreman start
