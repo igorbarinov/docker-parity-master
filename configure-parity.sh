@@ -4,11 +4,10 @@
 echo "home: $HOME"
 echo "user: $(whoami)"
 
-
-
 #####################
 # create an account #
 #####################
+
 PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
 echo $PASSWORD > $HOME/.parity-pass
 
@@ -29,7 +28,6 @@ address=0x$(parity account list | awk 'END{print}' | tr -cd '[:alnum:]._-')
 ################
 # create chain #
 ################
-
 cat > $HOME/chain.json <<EOL
 {
   "name": "Private",
@@ -62,8 +60,6 @@ cat > $HOME/chain.json <<EOL
     "extraData": "0x",
     "gasLimit": "0x2fefd8"
   },
-  "nodes": [
-  ],
   "accounts": {
     "0000000000000000000000000000000000000001": { "balance": "1", "nonce": "1048576", "builtin": { "name": "ecrecover", "pricing": { "linear": { "base": 3000, "word": 0 } } } },
     "0000000000000000000000000000000000000002": { "balance": "1", "nonce": "1048576", "builtin": { "name": "sha256", "pricing": { "linear": { "base": 60, "word": 12 } } } },
@@ -76,15 +72,6 @@ cat > $HOME/chain.json <<EOL
 }
 EOL
 
-# for reference
-#command="parity --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
 DAPP_PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
-command="parity --dapps-port 8002 --dapps-interface 0.0.0.0 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
-printf "%s\n%s" "#!/bin/sh" "$command" | tee /etc/init.d/parity
-chmod +x /etc/init.d/parity
-echo parity:$command >> /etc/goreman/Procfile 
-
-# for future
-#sudo chmod +x /etc/init.d/parity
-#sudo update-rc.d parity defaults
-#sudo service parity start
+command="parity: parity --dapps-interface $(ifconfig eth0 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1) --dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
+echo $command >> /etc/goreman/Procfile 

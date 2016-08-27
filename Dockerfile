@@ -29,20 +29,11 @@ RUN curl -Lk $PARITY_DEB_URL > $file
 RUN sudo dpkg -i $file
 RUN rm $file
 
-####################
-# configure parity #
-####################
-RUN mkdir /etc/goreman
-COPY Procfile /etc/goreman
-COPY configure-parity.sh $HOME/configure-parity.sh
-RUN chmod +x $HOME/configure-parity.sh
-RUN $HOME/configure-parity.sh
-
 ##################
 # install golang #
 ##################
 
-RUN axel https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz && \
+RUN axel -q https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz && \
        	tar xzvf go1.6.2.linux-amd64.tar.gz && \
        	mv go /usr/local 
 
@@ -61,6 +52,22 @@ RUN mkdir /var/www && mkdir /etc/caddy
 RUN curl https://getcaddy.com | bash
 COPY caddyfile /etc/caddy
 
+###################
+# install goreman #
+###################
+
+RUN go get github.com/mattn/goreman
+
+####################
+# configure parity #
+####################
+RUN mkdir /etc/goreman
+COPY Procfile /etc/goreman
+COPY configure-parity.sh $HOME/configure-parity.sh
+RUN chmod +x $HOME/configure-parity.sh
+# RUN $HOME/configure-parity.sh
+
+
 #########################
 # enode.sh to get enode #
 #########################
@@ -68,14 +75,6 @@ COPY caddyfile /etc/caddy
 COPY enode.sh /usr/local/bin/enode.sh
 RUN chmod +x /usr/local/bin/enode.sh
 
-################
-# install etcd #
-################
-
-RUN curl -L https://github.com/coreos/etcd/releases/download/v3.0.6/etcd-v3.0.6-linux-amd64.tar.gz -o etcd-v3.0.6-linux-amd64.tar.gz && \
-tar xzvf etcd-v3.0.6-linux-amd64.tar.gz && cd etcd-v3.0.6-linux-amd64 && \
-mv ./etc* /usr/local/bin && mkdir /root/.etcd
-RUN go get github.com/mattn/goreman
 
 ##########
 # volume #
@@ -88,8 +87,7 @@ EXPOSE 8545
 EXPOSE 30303
 # port for web server for static files with node id
 EXPOSE 8001
-# parity dapps ui 
-EXPOSE 8002
+
 
 COPY run.goreman /usr/local/bin
 CMD ["run.goreman"]

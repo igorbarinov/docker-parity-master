@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Starting parity.."
+/root/configure-parity.sh
+cp /root/chain.json /var/www/chain.json
 cd /etc/goreman 
 echo "starting foreman in bg.."
 goreman start
