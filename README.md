@@ -12,20 +12,28 @@
 
 ## FAQ
 Q: Where a /root volume mounted on local system?
+
 A: `sudo docker inspect parity-master `
 
+
 Q: How do I get into shell of a container?
+
 A:  `sudo docker exec -it parity-master bash`
 
 Q: How do I get credentials to connect to Parity UI?
+
 A: Shell to a docker container. Cat passwords to console ` cat /etc/goreman/Procfile `
 copy username from --dapps-user and pass from --dapps-pass
 
+
 Q: How do I connect to Parity UI?
+
 A: In browser type http://IP_OF_CONTAINER:8002 . You can get IPAddress of the container using `docker inspect parity-master | grep \"IPAddress\"`
 Working on Ubuntu, Not working on Mac, yet.
 
+
 Q: Why should I  build this image from source?
+
 A: While building, docker generates address, private keys, dapps ui password. If you use built image your credentials are like public. I do not recommend to use it in production.
 
 ## Source
