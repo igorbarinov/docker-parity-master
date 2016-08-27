@@ -65,7 +65,7 @@ RUN mkdir /etc/goreman
 COPY Procfile /etc/goreman
 COPY configure-parity.sh $HOME/configure-parity.sh
 RUN chmod +x $HOME/configure-parity.sh
-# RUN $HOME/configure-parity.sh
+RUN $HOME/configure-parity.sh
 
 
 #########################

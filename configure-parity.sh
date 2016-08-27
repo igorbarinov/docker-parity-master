@@ -72,6 +72,7 @@ cat > $HOME/chain.json <<EOL
 }
 EOL
 
-DAPP_PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
-command="parity: parity --dapps-interface $(ifconfig eth0 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1) --dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
+# DAPP_PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
+# --dapps-interface 0.0.0.0--dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD 
+command="parity: parity --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
 echo $command >> /etc/goreman/Procfile 
