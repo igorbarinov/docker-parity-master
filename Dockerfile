@@ -5,7 +5,7 @@ FROM ubuntu:14.04
 ##################################
 ENV HOME=/root
 RUN apt-get update -qq
-RUN apt-get install -y -qq build-essential software-properties-common vim telnet wget git curl expect expect-dev axel
+RUN apt-get install -qq -y build-essential software-properties-common vim telnet wget git curl expect expect-dev axel
 
 ################
 # install solc #
@@ -23,11 +23,17 @@ RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib' >> /etc/profile.d/solc.sh
 ##################
 # install parity #
 ##################
-ENV PARITY_DEB_URL=https://vanity-service.ethcore.io/github-data/latest-parity-deb
-ENV file=/tmp/parity.deb
-RUN curl -Lk $PARITY_DEB_URL > $file
-RUN sudo dpkg -i $file
-RUN rm $file
+#ENV PARITY_DEB_URL=https://vanity-service.ethcore.io/github-data/latest-parity-deb
+#ENV file=/tmp/parity.deb
+#RUN curl -Lk $PARITY_DEB_URL > $file
+#RUN sudo dpkg -i $file
+#RUN rm $file
+RUN curl -sSf https://static.rust-lang.org/rustup.sh | sh \
+ && cargo install --git https://github.com/ethcore/parity.git parity --branch master \
+ && strip /root/.cargo/bin/parity \
+ && cp -v /root/.cargo/bin/parity /usr/local/bin/ \
+ && /usr/local/lib/rustlib/uninstall.sh \
+ && rm -rf /root/.cargo/
 
 ##################
 # install golang #
@@ -87,7 +93,8 @@ EXPOSE 8545
 EXPOSE 30303
 # port for web server for static files with node id
 EXPOSE 8001
-
+# port for Parity UI
+EXPOSE 8002
 
 COPY run.goreman /usr/local/bin
 CMD ["run.goreman"]
