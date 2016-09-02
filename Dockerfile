@@ -28,9 +28,9 @@ RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib' >> /etc/profile.d/solc.sh
 #RUN curl -Lk $PARITY_DEB_URL > $file
 #RUN sudo dpkg -i $file
 #RUN rm $file
-RUN pwd
-RUN curl -sSf https://static.rust-lang.org/rustup.sh | sh \
- && cargo install --git https://github.com/ethcore/parity.git parity --branch master \
+
+RUN curl -sSf https://static.rust-lang.org/rustup.sh | sh
+RUN cargo install --git https://github.com/ethcore/parity.git parity --branch master \
  && strip /root/.cargo/bin/parity \
  && cp -v /root/.cargo/bin/parity /usr/local/bin/ \
  && /usr/local/lib/rustlib/uninstall.sh \
