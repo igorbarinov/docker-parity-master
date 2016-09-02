@@ -66,7 +66,7 @@ cat > $HOME/chain.json <<EOL
     "0000000000000000000000000000000000000003": { "balance": "1", "nonce": "1048576", "builtin": { "name": "ripemd160", "pricing": { "linear": { "base": 600, "word": 120 } } } },
     "0000000000000000000000000000000000000004": { "balance": "1", "nonce": "1048576", "builtin": { "name": "identity", "pricing": { "linear": { "base": 15, "word": 3 } } } },
     "${address}": {
-      "balance": "1606938044258990275541962092341162602522202993782792835301376"
+      "balance": "1000000"
     }
   }
 }
@@ -74,5 +74,6 @@ EOL
 
 DAPP_PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
  
-command="parity: parity --dapps-hosts  all --dapps-interface 0.0.0.0 --dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --force-sealing --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
+command="parity: parity -lsync=trace,txqueue=trace,own_tx=trace --reseal-on-txs all --dapps-hosts  all --dapps-interface 0.0.0.0 --dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
 echo $command >> /etc/goreman/Procfile 
+#  --force-sealing
