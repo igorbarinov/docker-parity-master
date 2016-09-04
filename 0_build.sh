@@ -1,1 +1,1 @@
-sudo docker build -t igorbarinov/docker-parity-master . #--no-cache
+docker build -t igorbarinov/docker-parity-master . #--no-cache
