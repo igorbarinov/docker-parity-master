@@ -17,8 +17,8 @@ RUN apt-get -y install solc
 ##################
 # install parity #
 ##################
-COPY bin/parity.zip /usr/local/bin/parity.zip
-RUN unzip /usr/local/bin/parity.zip && rm /usr/local/bin/parity.zip
+ADD bin/parity.zip /usr/local/bin/parity.zip
+RUN unzip /usr/local/bin/parity.zip -d /usr/local/bin
 
 #################
 # install caddy #
