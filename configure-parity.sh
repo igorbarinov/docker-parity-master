@@ -1,8 +1,4 @@
-  
 #!/bin/bash
-
-echo "home: $HOME"
-echo "user: $(whoami)"
 
 #####################
 # create an account #
@@ -11,19 +7,11 @@ echo "user: $(whoami)"
 PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
 echo $PASSWORD > $HOME/.parity-pass
 
-expect_out= expect -c "
-spawn sudo parity account new
-puts $HOME
-expect \"Type password: \"
-send ${PASSWORD}\n
-expect \"Repeat password: \"
-send ${PASSWORD}\n
-interact
-"
-
-echo $expect_out
+parity account new --password $HOME/.parity-pass
 
 address=0x$(parity account list | awk 'END{print}' | tr -cd '[:alnum:]._-')
+
+echo "address: $address"
 
 ################
 # create chain #
@@ -74,6 +62,5 @@ EOL
 
 DAPP_PASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)
  
-command="parity: parity -lsync=trace,txqueue=trace,own_tx=trace --reseal-on-txs all --force-sealing --dapps-hosts  all --dapps-interface 0.0.0.0 --dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
-echo $command >> /etc/goreman/Procfile 
-#  --force-sealing
+command="parity: parity --no-periodic-snapshot --reseal-on-txs all --force-sealing --dapps-hosts  all --dapps-interface 0.0.0.0 --dapps-port 8002 --dapps-user user --dapps-pass $DAPP_PASSWORD --chain $HOME/chain.json --author ${address} --unlock ${address} --password $HOME/.parity-pass --rpccorsdomain \"*\" --jsonrpc-hosts=all --jsonrpc-interface all >&1 1>>/var/log/parity.log 2>&1"
+echo $command >> /etc/goreman/Procfile
