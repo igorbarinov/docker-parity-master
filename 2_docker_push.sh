@@ -1,1 +1,1 @@
-docker push igorbarinov/docker-parity-master
+docker push igorbarinov/docker-parity-master-stable

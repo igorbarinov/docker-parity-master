@@ -7,7 +7,7 @@ ENV HOME=/root
 RUN apt-get update -qq
 RUN apt-get install -qq -y software-properties-common && add-apt-repository -y ppa:ethereum/ethereum 
 RUN apt-get update -qq
-RUN apt-get install -qq -y build-essential vim telnet wget git curl expect expect-dev unzip 
+RUN apt-get install -qq -y build-essential vim telnet wget git curl expect expect-dev unzip jq
 
 ################
 # install solc #
@@ -17,8 +17,8 @@ RUN apt-get -y install solc
 ##################
 # install parity #
 ##################
-ADD bin/parity.zip /usr/local/bin/parity.zip
-RUN unzip /usr/local/bin/parity.zip -d /usr/local/bin
+RUN wget -O /tmp/parity_1.3.10_amd64.deb http://d1h4xl4cr1h0mo.cloudfront.net/v1.3.10/x86_64-unknown-linux-gnu/parity_1.3.10_amd64.deb
+RUN dpkg -i /tmp/parity_1.3.10_amd64.deb
 
 #################
 # install caddy #
