@@ -5,7 +5,7 @@ FROM ubuntu:14.04
 ##################################
 ENV HOME=/root
 RUN apt-get update -qq
-RUN apt-get install -qq -y build-essential software-properties-common vim telnet wget git curl expect expect-dev axel
+RUN apt-get install -qq -y jq build-essential software-properties-common vim telnet wget git curl expect expect-dev axel
 
 ################
 # install solc #

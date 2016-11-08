@@ -13,7 +13,7 @@ echo $PASSWORD > $HOME/.parity-pass
 
 parity account new --password $HOME/.parity-pass
 
-address=0x$(parity account list | awk 'END{print}' | tr -cd '[:alnum:]._-')
+address=0x$(cat $HOME/.parity/keys/*| jq '.address' -r)
 
 ################
 # create chain #
